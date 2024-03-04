@@ -1,0 +1,1 @@
+# mifos-core-connector-diagrams

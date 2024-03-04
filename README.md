@@ -2,8 +2,10 @@
 
 ```mermaid
 sequenceDiagram
-    Alice->>+John: Hello John, how are you?
-    Alice->>+John: John, can you hear me?
-    John-->>-Alice: Hi Alice, I can hear you!
-    John-->>-Alice: I feel great!
+    Mifos Core Connector-->>+Core Connector: POST /sendmoney
+    Core Connector-->>+Token Adapter: POST /sendmoney
+    Token Adapter-->>+SDK Scheme Adapter: POST /sendmoney
+    Mifos Core Connector-->>+Core Connector: POST /sendmoney
+    Core Connector-->>+Token Adapter: POST /sendmoney
+    Token Adapter-->>+SDK Scheme Adapter: POST /sendmoney
 ```

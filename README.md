@@ -57,23 +57,38 @@ Run this command to deploy fineract locally.
 docker run --name fineract -p 8443:8443 -p 8080:8080  -e FINERACT_DEFAULT_TENANTDB_PWD=mysql -e FINERACT_DEFAULT_TENANTDB_HOSTNAME=localhost -e FINERACT_SERVER_SSL_ENABLED=false --network="host" apache/fineract
 ```
 
+# Existing public fineract instances 
 
-# Testing Fineract using Postman
+There are existing public instances of Apache fineract hosted and maintained by [Mifos Initiative](https://www.mifos.org)
 
-- Use postman to create a Parent
-- Create an Office
-- Create a Group
-- Create a Client
+Here is one I used for the development and validation of my api routes 
+- [https://demo.mifos.io/](https://demo.mifos.io/)
+
+You can make requests to this base url while referring to the api docs at [Docs](https://demo.mifos.io/api-docs/apiLive.htm)
 
 
+# Testing with Postman.
+
+I have included in this repository a postman collection which you can use to test as I did during the development of this core connector.
 
 # Fineract Core Connector Sequence Diagram
 ```mermaid
 sequenceDiagram
-    Fineract CBS-->>+Core Connector: POST /sendmoney
-    Core Connector-->>+Token Adapter: POST /sendmoney
-    Token Adapter-->>+SDK Scheme Adapter: POST /sendmoney
-    Fineract CBS-->>+Core Connector: POST /sendmoney
-    Core Connector-->>+Token Adapter: POST /sendmoney
-    SDK Scheme Adapter-->>+Token Adapter: POST /sendmoney
+    SDK Scheme Adapter->>+Core Connector: GET /parties/{Type}/{ID}
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={ID}&resource=savingsaccount
+    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
+    Core Connector-->>+Core Connector: Extract Account Id
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector-->>+Core Connector: Extract Client Id
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
+    Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+    SDK Scheme Adapter->>+Core Connector: POST /quoterequests
+    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+    SDK Scheme Adapter->>+Core Connector: POST /transfers
+    Core Connector->>+Apache Fineract: POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=deposit
+    Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+
 ```

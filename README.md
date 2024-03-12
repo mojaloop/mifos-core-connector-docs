@@ -72,6 +72,8 @@ You can make requests to this base url while referring to the api docs at [Docs]
 I have included in this repository a postman collection which you can use to test as I did during the development of this core connector.
 
 # Fineract Core Connector Sequence Diagram
+
+## Payee account in Fineract
 ```mermaid
 sequenceDiagram
     SDK Scheme Adapter->>+Core Connector: GET /parties/{Type}/{ID}
@@ -85,6 +87,7 @@ sequenceDiagram
     Apache Fineract-->>+Core Connector: Response 200 OK {...}
     Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
     SDK Scheme Adapter->>+Core Connector: POST /quoterequests
+    Core Connector->>+Apache Fineract: 
     Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
     SDK Scheme Adapter->>+Core Connector: POST /transfers
     Core Connector->>+Apache Fineract: POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=deposit

@@ -1,0 +1,881 @@
+{
+	"info": {
+		"_postman_id": "dcdcb549-05cc-4e83-9403-fcd810dd13aa",
+		"name": "MIfos Core Connector",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12510679"
+	},
+	"item": [
+		{
+			"name": "fineract",
+			"item": [
+				{
+					"name": "fin-req-test",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/clients/template",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"clients",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createClient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"officeId\": 1,\n    \"legalFormId\": 1,\n    \"isStaff\": false,\n    \"active\": false,\n    \"mobileNo\": \"07834344434\",\n    \"emailAddress\": \"iit.pc.pc@gmail.com\",\n    \"submittedOnDate\": \"07 March 2024\",\n    \"firstname\": \"Joannah\",\n    \"lastname\": \"Wamoni\",\n    \"familyMembers\": [],\n    \"dateFormat\": \"dd MMMM yyyy\",\n    \"locale\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/clients",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClients",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/clients",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getGroups",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/groups",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createGroup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dateFormat\":\"dd MMMM yyyy\",\n  \"activationDate\":\"06 03 2024\",\n  \"locale\":\"en\",\n  \"active\": true,\n  \"name\": \"Normal Accounts\",\n  \"officeId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/groups?",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOffices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/offices",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"offices"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getOffices",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "fineract-platform-tenantId",
+										"value": "default",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://localhost:8443/fineract-provider/api/v1/offices",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8443",
+									"path": [
+										"fineract-provider",
+										"api",
+										"v1",
+										"offices"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Notification-Refresh",
+									"value": "false"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, PUT, DELETE, OPTIONS"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "119"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Mar 2024 11:16:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Head Office\",\n        \"nameDecorated\": \"Head Office\",\n        \"externalId\": \"1\",\n        \"openingDate\": [\n            2009,\n            1,\n            1\n        ],\n        \"hierarchy\": \".\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "createOffice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dateFormat\": \"dd MMMM yyyy\",\n  \"externalId\": \"SYS54-88\",\n  \"locale\": \"en\",\n  \"name\": \"Good Friday\",\n  \"openingDate\": \"06 03 2024\",\n  \"parentId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/offices",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"offices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/users",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activateClient",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getDatatables",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/datatables",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"datatables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createDatatable",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:8443/fineract-provider/api/v1/datatables",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"datatables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSavingsAccounts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "depositMoney",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"locale\": \"en\",\n  \"dateFormat\": \"dd MM yy\",\n  \"transactionDate\": \"11 3 24\",\n  \"transactionAmount\": \"10\",\n  \"paymentTypeId\": \"1\",\n  \"accountNumber\": \"2\",\n  \"routingCode\": \"rou123\",\n  \"receiptNumber\": \"rec123\",\n  \"bankNumber\": \"Test Bank\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts/1/transactions?command=deposit",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts",
+								"1",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "deposit"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSavingsAccount",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts/1/",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activateSavingsAccount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"locale\": \"en\",\n  \"dateFormat\": \"dd MMMM yyyy\",\n  \"activatedOnDate\": \"11 March 2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts/1/?command=activate",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "activate"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approveSavingsAccount",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"locale\": \"en\",\n  \"dateFormat\": \"dd MMMM yyyy\",\n  \"approvedOnDate\": \"11 March 2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts/1/?command=approve",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "approve"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "withdrawMoney",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"locale\": \"en\",\n  \"dateFormat\": \"dd MMMM yyyy\",\n  \"transactionDate\": \"11 Mar 2024\",\n  \"transactionAmount\": \"500\",\n  \"paymentTypeId\": \"1\",\n  \"accountNumber\": \"000000001\",\n  \"routingCode\": \"rou123\",\n  \"receiptNumber\": \"rec123\",\n  \"bankNumber\": \"Test Bank\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/savingsaccounts/1/transactions?command=withdrawal",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"savingsaccounts",
+								"1",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "withdrawal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchAccount",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/search?query=1&resource=savingsaccount",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "1"
+								},
+								{
+									"key": "resource",
+									"value": "savingsaccount"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClient",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/clients/1/",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"clients",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCharges",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/charges",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCharge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fineract-platform-tenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"Withdraw fee\",\n\"chargeAppliesTo\": 2,\n\"currencyCode\": \"NGN\",\n\"locale\": \"en\",\n\"amount\":\"250\",\n\"chargeTimeType\": 5,\n\"chargeCalculationType\": 2,\n\"chargePaymentMode\": 1,\n\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/charges",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChargeTemplate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{BASE_URL}}/fineract-provider/api/v1/charges/template",
+							"protocol": "https",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"fineract-provider",
+								"api",
+								"v1",
+								"charges",
+								"template"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "password",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "mifos",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "mifos-core-connector-pm4ml",
+			"item": [
+				{
+					"name": "getParties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/parties/IBAN/SK680720000289000000002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"parties",
+								"IBAN",
+								"SK680720000289000000002"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

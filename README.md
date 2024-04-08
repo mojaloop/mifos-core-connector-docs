@@ -1,4 +1,4 @@
-# Mifos Core Connector for Mojaloop Development Docs 
+# Mifos Core Connector for Mojaloop Design Findings 
 
 > The term fineract and Mifos are used interchangeably in this documentation to mean the same thing.
 
@@ -66,32 +66,53 @@ Here is one I used for the development and validation of my api routes
 
 You can make requests to this base url while referring to the api docs at [Docs](https://demo.mifos.io/api-docs/apiLive.htm)
 
-
-# Testing with Postman.
-
-I have included in this repository a postman collection which you can use to test as I did during the development of this core connector.
-
 # Fineract Core Connector Sequence Diagram
 
 ## Payee account in Fineract
+> Make sure to view this in github to see the rendered sequence diagram. [Issue on Github](https://github.com/mojaloop/project/issues/3711)
+
 ```mermaid
 sequenceDiagram
-    SDK Scheme Adapter->>+Core Connector: GET /parties/{Type}/{ID}
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={ID}&resource=savingsaccount
+    SDK Scheme Adapter->>+Core Connector: GET /parties/IBAN/{ID}
+    Core Connector->>+Core Connector: Validate &Extract Account No from IBAN
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
     Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
     Core Connector-->>+Core Connector: Extract Account Id
     Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
     Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector->>+Core Connector: Verify Account is active and can receive deposits
+    Alt If Account Active
     Core Connector-->>+Core Connector: Extract Client Id
     Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
     Apache Fineract-->>+Core Connector: Response 200 OK {...}
     Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+    Else If Account Not Active
+    Core Connector-->>+SDK Scheme Adapter: Response 404 Not Found
+    End
     SDK Scheme Adapter->>+Core Connector: POST /quoterequests
-    Core Connector->>+Apache Fineract: 
+    Core Connector-->>+Core Connector: No Fees for Deposits
+    Core Connector->>+Core Connector: Validate &Extract Account No from IBAN
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
+    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
+    Core Connector-->>+Core Connector: Extract Account Id
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector->>+Core Connector: Verify Account is active and can receive deposits
+    Core Connector-->>+Core Connector: Extract Client Id
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
+    Apache Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector-->>+Core Connector: Tiered KYC Checks need to be performed here.
     Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
     SDK Scheme Adapter->>+Core Connector: POST /transfers
+    Core Connector->>+Core Connector: Extract Account No from IBAN
+    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
+    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
+    Core Connector-->>+Core Connector: Extract Account Id
     Core Connector->>+Apache Fineract: POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=deposit
+    Alt If No Error
     Apache Fineract-->>+Core Connector: Response 200 OK {...}
     Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
-
+    Else If Error
+    Core Connector-->>+SDK Scheme Adapter: Response 500 Server Error
+    End
 ```

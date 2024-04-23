@@ -116,3 +116,38 @@ sequenceDiagram
     Core Connector-->>+SDK Scheme Adapter: Response 500 Server Error
     End
 ```
+
+# Integration for Payer Flow.
+
+```mermaid
+sequenceDiagram
+    Dfsp Operations App->>+Core Connector: POST /transfer {..} 
+    Core Connector->>+Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Fineract-->>+Core Connector: Response 200 OK {...}
+    Core Connector->>+ Core Connector: Check Account is active
+    Alt If Account is inactive
+    Core Connector -->>+ Dfsp Operations App: Error 500 {...}
+    End
+    Core Connector->>+ SDK Scheme Adapter: POST /transfers {AUTO_ACCEPT_QUOTES=false, AUTO_ACCEPT_PARTY=true}
+    Alt If Account found
+    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
+    Core Connector->>+ Core Connector: Check Quote Amounts and Account Balance
+    Alt If Quote is ok
+    Core Connector->>+ SDK Scheme Adapter: PUT /transfers/{transfersId} {acceptQuote=true}
+    Alt If Transfer Successful
+    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
+    Core Connector-->>+ Fineract:POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=withdraw
+    Core Connector -->>+ Dfsp Operations App: 200 OK {...}
+    Else if Transfer not Successful
+    SDK Scheme Adapter -->>+ Core Connector: 500/504 Error {...}
+    Core Connector-->>+ Dfsp Operations App: 500/504 Error {...}
+    End
+    Else if Quote not ok
+    Core Connector-->>+ Dfsp Operations App: 500 Error {...}
+    End
+    Else If Account not found
+    SDK Scheme Adapter-->>+ Core Connector: 400/500/504 {...} 
+    Core Connector-->>+ Dfsp Operations App: 400/500/504 {...}
+    End
+
+```

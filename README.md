@@ -129,25 +129,28 @@ sequenceDiagram
     Core Connector -->>+ Dfsp Operations App: Error 500 {...}
     End
     Core Connector->>+ SDK Scheme Adapter: POST /transfers {AUTO_ACCEPT_QUOTES=false, AUTO_ACCEPT_PARTY=true}
-    Alt If Account found
-    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
-    Core Connector->>+ Core Connector: Check Quote Amounts and Account Balance
-    Alt If Quote is ok
-    Core Connector->>+ SDK Scheme Adapter: PUT /transfers/{transfersId} {acceptQuote=true}
-    Alt If Transfer Successful
-    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
-    Core Connector-->>+ Fineract:POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=withdraw
-    Core Connector -->>+ Dfsp Operations App: 200 OK {...}
-    Else if Transfer not Successful
-    SDK Scheme Adapter -->>+ Core Connector: 500/504 Error {...}
-    Core Connector-->>+ Dfsp Operations App: 500/504 Error {...}
-    End
-    Else if Quote not ok
-    Core Connector-->>+ Dfsp Operations App: 500 Error {...}
-    End
-    Else If Account not found
+    Alt If Account not found
     SDK Scheme Adapter-->>+ Core Connector: 400/500/504 {...} 
     Core Connector-->>+ Dfsp Operations App: 400/500/504 {...}
     End
-
+    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
+    Core Connector->>+ Core Connector: Check Quote Amounts and Account Balance
+    Alt If Quote ok
+    Core Connector-->>+ Dfsp Operations App: 200 OK {.Quote.}
+    Else If Qoute not ok
+    Core Connector-->>+ Dfsp Operations App: 500 Error {...}
+    End
+    Dfsp Operations App->>+ Core Connector: PUT /transfers/{transferID} {acceptQuote=true}
+    Core Connector->>+ Fineract: Reserve funds POST /api/v1/accounttransfers
+    Fineract-->>+ Core Connector: 200 Ok
+    Core Connector->>+ SDK Scheme Adapter: PUT /transfers/{transfersId} {acceptQuote=true}
+    Alt If Transfer Successful
+    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
+    Core Connector->>+ Fineract:POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=withdraw
+    Core Connector -->>+ Dfsp Operations App: 200 OK {...}
+    Else if Transfer not Successful
+    SDK Scheme Adapter -->>+ Core Connector: 500/504 Error {...}
+    Core Connector ->>+ Fineract: Refund payer POST /api/v1/accounttransfers
+    Core Connector-->>+ Dfsp Operations App: 500/504 Error {...}
+    End
 ```

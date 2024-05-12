@@ -73,47 +73,47 @@ You can make requests to this base url while referring to the api docs at [Docs]
 
 ```mermaid
 sequenceDiagram
-    SDK Scheme Adapter->>+Core Connector: GET /parties/IBAN/{ID}
-    Core Connector->>+Core Connector: Validate &Extract Account No from IBAN
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
-    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
-    Core Connector-->>+Core Connector: Extract Account Id
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
-    Apache Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector->>+Core Connector: Verify Account is active and can receive deposits
+    SDK Scheme Adapter->>Core Connector: GET /parties/IBAN/{ID}
+    Core Connector->>Core Connector: Validate &Extract Account No from IBAN
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
+    Apache Fineract-->>Core Connector: Response 200 OK [{}...]
+    Core Connector-->>Core Connector: Extract Account Id
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Apache Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector->>Core Connector: Verify Account is active and can receive deposits
     Alt If Account Active
-    Core Connector-->>+Core Connector: Extract Client Id
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
-    Apache Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+    Core Connector-->>Core Connector: Extract Client Id
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
+    Apache Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector-->>SDK Scheme Adapter: Response 200 OK {...}
     Else If Account Not Active
-    Core Connector-->>+SDK Scheme Adapter: Response 404 Not Found
+    Core Connector-->>SDK Scheme Adapter: Response 404 Not Found
     End
-    SDK Scheme Adapter->>+Core Connector: POST /quoterequests
-    Core Connector-->>+Core Connector: No Fees for Deposits
-    Core Connector->>+Core Connector: Validate &Extract Account No from IBAN
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
-    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
-    Core Connector-->>+Core Connector: Extract Account Id
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
-    Apache Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector->>+Core Connector: Verify Account is active and can receive deposits
-    Core Connector-->>+Core Connector: Extract Client Id
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
-    Apache Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector-->>+Core Connector: Tiered KYC Checks need to be performed here.
-    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
-    SDK Scheme Adapter->>+Core Connector: POST /transfers
-    Core Connector->>+Core Connector: Extract Account No from IBAN
-    Core Connector->>+Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
-    Apache Fineract-->>+Core Connector: Response 200 OK [{}...]
-    Core Connector-->>+Core Connector: Extract Account Id
-    Core Connector->>+Apache Fineract: POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=deposit
+    SDK Scheme Adapter->>Core Connector: POST /quoterequests
+    Core Connector-->>Core Connector: No Fees for Deposits
+    Core Connector->>Core Connector: Validate &Extract Account No from IBAN
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
+    Apache Fineract-->>Core Connector: Response 200 OK [{}...]
+    Core Connector-->>Core Connector: Extract Account Id
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Apache Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector->>Core Connector: Verify Account is active and can receive deposits
+    Core Connector-->>Core Connector: Extract Client Id
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/
+    Apache Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector-->>Core Connector: Tiered KYC Checks need to be performed here.
+    Core Connector-->>SDK Scheme Adapter: Response 200 OK {...}
+    SDK Scheme Adapter->>Core Connector: POST /transfers
+    Core Connector->>Core Connector: Extract Account No from IBAN
+    Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
+    Apache Fineract-->>Core Connector: Response 200 OK [{}...]
+    Core Connector-->>Core Connector: Extract Account Id
+    Core Connector->>Apache Fineract: POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=deposit
     Alt If No Error
-    Apache Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector-->>+SDK Scheme Adapter: Response 200 OK {...}
+    Apache Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector-->>SDK Scheme Adapter: Response 200 OK {...}
     Else If Error
-    Core Connector-->>+SDK Scheme Adapter: Response 500 Server Error
+    Core Connector-->>SDK Scheme Adapter: Response 500 Server Error
     End
 ```
 
@@ -121,36 +121,36 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    Dfsp Operations App->>+Core Connector: POST /transfer {..} 
-    Core Connector->>+Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
-    Fineract-->>+Core Connector: Response 200 OK {...}
-    Core Connector->>+ Core Connector: Check Account is active
+    Dfsp Operations App->>Core Connector: POST /transfer {..} 
+    Core Connector->>Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
+    Fineract-->>Core Connector: Response 200 OK {...}
+    Core Connector->> Core Connector: Check Account is active
     Alt If Account is inactive
-    Core Connector -->>+ Dfsp Operations App: Error 500 {...}
+    Core Connector -->> Dfsp Operations App: Error 500 {...}
     End
-    Core Connector->>+ SDK Scheme Adapter: POST /transfers {AUTO_ACCEPT_QUOTES=false, AUTO_ACCEPT_PARTY=true}
+    Core Connector->> SDK Scheme Adapter: POST /transfers {AUTO_ACCEPT_QUOTES=false, AUTO_ACCEPT_PARTY=true}
     Alt If Account not found
-    SDK Scheme Adapter-->>+ Core Connector: 400/500/504 {...} 
-    Core Connector-->>+ Dfsp Operations App: 400/500/504 {...}
+    SDK Scheme Adapter-->> Core Connector: 400/500/504 {...} 
+    Core Connector-->> Dfsp Operations App: 400/500/504 {...}
     End
-    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
-    Core Connector->>+ Core Connector: Check Quote Amounts and Account Balance
+    SDK Scheme Adapter-->> Core Connector: 200 OK {...}
+    Core Connector->> Core Connector: Check Quote Amounts and Account Balance
     Alt If Quote ok
-    Core Connector-->>+ Dfsp Operations App: 200 OK {.Quote.}
+    Core Connector-->> Dfsp Operations App: 200 OK {.Quote.}
     Else If Qoute not ok
-    Core Connector-->>+ Dfsp Operations App: 500 Error {...}
+    Core Connector-->> Dfsp Operations App: 500 Error {...}
     End
-    Dfsp Operations App->>+ Core Connector: PUT /transfers/{transferID} {acceptQuote=true}
-    Core Connector->>+ Fineract: Reserve funds POST /api/v1/accounttransfers
-    Fineract-->>+ Core Connector: 200 Ok
-    Core Connector->>+ SDK Scheme Adapter: PUT /transfers/{transfersId} {acceptQuote=true}
+    Dfsp Operations App->> Core Connector: PUT /transfers/{transferID} {acceptQuote=true}
+    Core Connector->> Fineract: Reserve funds POST /api/v1/accounttransfers
+    Fineract-->> Core Connector: 200 Ok
+    Core Connector->> SDK Scheme Adapter: PUT /transfers/{transfersId} {acceptQuote=true}
     Alt If Transfer Successful
-    SDK Scheme Adapter-->>+ Core Connector: 200 OK {...}
-    Core Connector->>+ Fineract:POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=withdraw
-    Core Connector -->>+ Dfsp Operations App: 200 OK {...}
+    SDK Scheme Adapter-->> Core Connector: 200 OK {...}
+    Core Connector->> Fineract:POST /fineract-provider/api/v1/savingsaccounts/{accountId}/transactions?command=withdraw
+    Core Connector -->> Dfsp Operations App: 200 OK {...}
     Else if Transfer not Successful
-    SDK Scheme Adapter -->>+ Core Connector: 500/504 Error {...}
-    Core Connector ->>+ Fineract: Refund payer POST /api/v1/accounttransfers
-    Core Connector-->>+ Dfsp Operations App: 500/504 Error {...}
+    SDK Scheme Adapter -->> Core Connector: 500/504 Error {...}
+    Core Connector ->> Fineract: Refund payer POST /api/v1/accounttransfers
+    Core Connector-->> Dfsp Operations App: 500/504 Error {...}
     End
 ```

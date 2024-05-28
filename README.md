@@ -154,3 +154,91 @@ sequenceDiagram
     Core Connector-->> Dfsp Operations App: 500/504 Error {...}
     End
 ```
+
+
+# G2P/MOSIP Demo 
+
+The goal for this demo is to illustrate how Digital Public Goods can be used by governments to extend financial aid to 
+their citizens in times of distress.
+
+# Scenario 
+The government uses a beneficiary portal to register new beneficiaries who are picked from an Identity platform powered by MOSIP. After verifying the identity of a person, a payment token alias is created which is stored in Mojaloop and a DFSP deployed payment token 
+adapter.
+
+When payments are being sent from government to a beneficiary. An account lookup is performed against the payment token alias that was created earlier. When the Mojaloop Hub has resolved the DFSP to which the account belongs, it will perform a get parties request to the beneficiaries DFSP.
+
+In this scenario, Apache Fineract is being used as the core banking system for managing people's accounts in the beneficiary's DFSP. Once the DFPS receives a get parties request, it first of all performs a payment token mapping to get the real ID type of the beneficiary and then queries the Core Banking System (Apache Fineract) through a core connector (Mifos Core Connector) to get the 
+details about the beneficiary.
+
+Once a party is found or not found, an appropriate response is returned to Mojaloop indicating whether the party was found or not. If the party was found, a request for a quote is prepared by mojaloop and subsequently a transfer can also be initiated by the Government's DFSP.
+
+All incoming deposit requests will go through the payment token adapter such that the real Party ID Type may be substituted in place of the ALIAS.
+
+
+Here is a sequence diagram to illustrate this interaction at a high level.
+
+# Payment Token Registration Process
+
+```mermaid
+sequenceDiagram
+    autonumber
+    Beneficiary Portal ->> E Signet MOSIP: Get Beneficiary Details from MOSIP 
+    Beneficiary Portal ->> Beneficiary Portal: create Payment Token to be mapped to an specific Id Value of IdType X
+    Beneficiary Portal ->> Mojaloop Hub: Register the account in a dfsp with type ALIAS
+    Beneficiary Portal ->> Payment Token Adapter: Register the payment token in PTA with Id Value and Type
+```
+
+# Synchronous Payment Process
+
+The different steps of a Mojaloop payment are divided into 3 sequence diagrams for ease of understanding.
+
+# Get Parties
+
+```mermaid
+sequenceDiagram
+    autonumber
+    GOV Dfsp ->> Mojaloop: Account Lookup with to.IdType ALIAS
+    Mojaloop ->> Beneficiary DFSP PTA: GET /parties/ALIAS/ID
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute ALIAS for actual ID.
+    Beneficiary DFSP PTA ->> Mifos CC: GET /parties/{IdType}/ID
+    Mifos CC ->> Apache Fineract: Search for account.
+    Apache Fineract-->>Mifos CC: Return Party Details.
+    Mifos CC -->> Beneficiary DFSP PTA: Return Party Details.
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute actual ID for ALIAS
+    Beneficiary DFSP PTA -->> Mojaloop: Return Party Details
+    Mojaloop --> GOV Dfsp: Return Party Details.
+```
+
+# Quotes
+
+```mermaid
+sequenceDiagram
+    autonumber
+    GOV Dfsp ->> Mojaloop: Quote request with to.IdType ALIAS
+    Mojaloop ->> Beneficiary DFSP PTA: POST /quoterequests
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute ALIAS for actual ID.
+    Beneficiary DFSP PTA ->> Mifos CC: POST /quoterequests
+    Mifos CC ->> Apache Fineract: Calculate Quote for Account based on Amount
+    Apache Fineract-->>Mifos CC: Return Quote
+    Mifos CC -->> Beneficiary DFSP PTA: Return Quote
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute actual ID for ALIAS
+    Beneficiary DFSP PTA -->> Mojaloop: Return Quote
+    Mojaloop --> GOV Dfsp: Return Quote
+```
+
+# Transfers
+
+```mermaid
+sequenceDiagram
+    autonumber
+    GOV Dfsp ->> Mojaloop: Transfer request with to.IdType ALIAS
+    Mojaloop ->> Beneficiary DFSP PTA: POST /transfers
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute ALIAS for actual ID.
+    Beneficiary DFSP PTA ->> Mifos CC: POST /transfers
+    Mifos CC ->> Apache Fineract: Credit beneficiary's account
+    Apache Fineract-->>Mifos CC: Return Successful deposit
+    Mifos CC -->> Beneficiary DFSP PTA: Return Committed Transfer
+    Beneficiary DFSP PTA ->> Beneficiary DFSP PTA: Substitute actual ID for ALIAS
+    Beneficiary DFSP PTA -->> Mojaloop: Return Committed Transfer
+    Mojaloop --> GOV Dfsp: Return Committed Transfer
+```

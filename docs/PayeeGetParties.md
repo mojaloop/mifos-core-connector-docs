@@ -1,4 +1,4 @@
-Payee Get Parties sequence diagram
+# Payee Get Parties sequence diagram
 
 ```mermaid
 sequenceDiagram

@@ -11,6 +11,9 @@ sequenceDiagram
     Alt If Id Type invalid
     Core Connector-->>SDK Scheme Adapter: Response 400 Bad Request
     End
+    Alt If Currency Not Supported
+    Core Connector -->> SDK Scheme Adapter: Response 500 ML Code: 5106
+    End
     Core Connector-->>Core Connector: No Fees for Deposits
     Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/search?query={AccountNo}&resource=savingsaccount
     Apache Fineract-->>Core Connector: Response [{}...]
@@ -27,10 +30,13 @@ sequenceDiagram
     End
     Core Connector->>Core Connector: Verify Account is active and can receive deposits
     Alt If Account does not exist
-    Core Connector -->> SDK Scheme Adapter: Response 404: 5107
+    Core Connector -->> SDK Scheme Adapter: Response 404: Ml Code : 5107
     End 
     Alt If Account Inactive
-    Core Connector -->> SDK Scheme Adapter: Response 404: 5107
+    Core Connector -->> SDK Scheme Adapter: Response 404: Ml Code :5107
+    End
+    Alt If Amount > Limit
+    Core Connector -->> SDK Scheme Adapter: Response 500 : ML Code: 5200
     End
     Core Connector-->>Core Connector: Extract Client Id
     Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/clients/{clientId}/

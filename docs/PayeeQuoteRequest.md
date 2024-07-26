@@ -28,10 +28,10 @@ sequenceDiagram
     Alt If Response is not Success
     Core Connector -->> SDK Scheme Adapter: Response 500: ML Code: 5000
     End
-    Core Connector->>Core Connector: Verify Account is active and can receive deposits
     Alt If Account does not exist
     Core Connector -->> SDK Scheme Adapter: Response 404: Ml Code : 5107
     End 
+    Core Connector->>Core Connector: Verify Account is active and can receive deposits
     Alt If Account Inactive
     Core Connector -->> SDK Scheme Adapter: Response 404: Ml Code :5107
     End

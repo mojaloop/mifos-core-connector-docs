@@ -46,5 +46,11 @@ sequenceDiagram
     Core Connector -->> SDK Scheme Adapter: Response 500: ML Code: 5000
     End 
     Core Connector-->>Core Connector: Tiered KYC Checks 
+    Alt If KYC Checks fail
+    Core Connector-->> SDK Scheme Adapter: Response 500: ML Code: 5104
+    End
+    Alt If fees calculation wrong or excessive:
+    Core Connector-->> SDK Scheme Adapter: Response 500: ML Code: 5101
+    End
     Core Connector-->>SDK Scheme Adapter: Response 200 OK {...}
 ```

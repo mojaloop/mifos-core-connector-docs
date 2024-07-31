@@ -15,15 +15,17 @@ sequenceDiagram
     Core Connector -->> Dfsp Operations App: Response 500
     End
     Core Connector->> Mojaloop Connector: POST /transfers {AUTO_ACCEPT_PARTY=true, AUTO_ACCEPT_QUOTE=false}
+    Alt If WAITING_FOR_CONVERSION_ACCEPTANCE
     Mojaloop Connector -->> Core Connector: Response: ConversionRate
-    Core Connector --> Core Connector: Check Rate
+    Core Connector -->> Core Connector: Check Rate
     Core Connector ->> Mojaloop Connector: PUT /transfers/{id} {acceptConversion: true}
-    Mojaloop Connector -->> Core Connector: Response
+    End
+    Mojaloop Connector -->> Core Connector: Response. Normal Quote
     Alt if response not success
     Core Connector -->> Dfsp Operations App: Response 500
     End
     Core Connector ->> Core Connector: Check returned Quote
-    Alt If Quote is correct
+    Alt If Quote is incorrect
     Core Connector -->> Dfsp Operations App: Response 500
     End
     Core Connector -->> Dfsp Operations App: Response 200 

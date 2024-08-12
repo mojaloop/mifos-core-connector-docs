@@ -17,6 +17,9 @@ sequenceDiagram
     Alt If Response is not Success
     Core Connector -->> Mojaloop Connector: Response 500: ML Code: 5000
     End
+    Alt If Account Not Found
+    Core Connector-->>Mojaloop Connector: Response 404 Not Found : ML Code : 5107
+    End
     Core Connector-->>Core Connector: Extract Account Id
     Core Connector->>Apache Fineract: GET /fineract-provider/api/v1/savingsaccounts/{accountId}/
     Apache Fineract-->>Core Connector: Response {...}
@@ -26,9 +29,6 @@ sequenceDiagram
     End
     Core Connector->>Core Connector: Verify Account is active and can receive deposits
     Alt If Account not Active
-    Core Connector-->>Mojaloop Connector: Response 404 Not Found : ML Code : 5107
-    End
-    Alt If Account Not Found
     Core Connector-->>Mojaloop Connector: Response 404 Not Found : ML Code : 5107
     End
     Core Connector-->>Core Connector: Extract Client Id
